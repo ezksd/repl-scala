@@ -22,7 +22,9 @@ object Interpreter {
       f(list.head, newhead => cps_map(list.tail, f, newtail => k(newhead :: newtail)))
   }
 
-  def eval0(env: Environment): ((Any, Any => Unit) => Unit) = (x, k1) => eval(x, env, r => k1(r))
+  def evalHelper(env: Environment): ((Any, Any => Unit) => Unit) = (x, k1) => eval(x, env, r => k1(r))
+
+  def evalAndPrint(expr: Any): Unit = eval(expr, env0, println)
 
   def eval(expr: Any, env: Environment, k: Any => Unit): Unit = {
     expr match {
@@ -34,18 +36,22 @@ object Interpreter {
       }
       case "set!" :: (key: String) :: value :: Nil => k(env.set(key, value))
       case "lambda" :: (params: List[String]) :: xs => k(Closure(env, params, xs))
+      case "call/cc" :: e1 :: Nil => eval(e1, env, {
+        case Closure(saved, params, body) => eval(body, saved.extend(mutable.Map[String, Any]((params.head, k))), k)
+      })
       case "if" :: pred :: first :: second :: Nil => eval(pred, env, {
         case true => eval(first, env, k)
         case false => eval(second, env, k)
       })
       case s: String => k(env.lookup(s))
       case fun :: vals => eval(fun, env, r1 => {
-        cps_map(vals, eval0(env), evaluated =>
+        cps_map(vals, evalHelper(env), evaluated =>
           r1 match {
             case Closure(saved, params, body) =>
-              cps_map(body, eval0(saved.extend(mutable.Map(params.zip(evaluated).toMap.toSeq: _*))),
+              cps_map(body, evalHelper(saved.extend(mutable.Map(params.zip(evaluated).toMap.toSeq: _*))),
                 r2 => k(r2.last))
             case prim: Primitive => k(prim(evaluated))
+            case f:Function[Any,Unit] => f(evaluated.head)
           })
       })
       case _ => k(expr)
@@ -53,7 +59,7 @@ object Interpreter {
   }
 
   def main(args: Array[String]): Unit = {
-    val exp = parse("(define (fact n)\n  (if (= n 1)\n      1\n      (* n (fact (- n 1)))))\n(fact 10)")
+    val exp = parse("(define a 1)")
     exp.foreach(e => eval(e, env0, println))
 
   }

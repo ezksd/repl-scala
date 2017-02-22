@@ -22,7 +22,7 @@ class Environment(parent: Environment, map: mutable.Map[String, Any]) {
     if (map.contains(key))
       map.put(key, value)
     else
-      throw new UnboundIdentifer("key")
+      throw new UnboundIdentifer("unboud identifer : key")
     "set:" +key +" done..."
   }
 
