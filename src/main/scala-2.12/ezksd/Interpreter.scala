@@ -4,37 +4,57 @@ import ezksd.Parser.parse
 
 import scala.collection.mutable
 
+
 object Interpreter {
-  def eval(expr: Any, env: Environment): Any = {
+  val env0 = new Environment(Primitives.init) {
+    override def lookup(key: String): Any = {
+      if (getMap.contains(key))
+        getMap(key)
+      else
+        throw new UnboundIdentifer(key)
+    }
+  }
+
+  def cps_map(list: List[Any], f: (Any, Any => Unit) => Unit, k: List[Any] => Unit): Unit = {
+    if (list.isEmpty)
+      k(List.empty)
+    else
+      f(list.head, newhead => cps_map(list.tail, f, newtail => k(newhead :: newtail)))
+  }
+
+  def eval0(env: Environment): ((Any, Any => Unit) => Unit) = (x, k1) => eval(x, env, r => k1(r))
+
+  def eval(expr: Any, env: Environment, k: Any => Unit): Unit = {
     expr match {
-      case "define" :: (key: String) :: value :: Nil => env.define(key, value)
-      case "set" :: (key: String) :: value :: Nil => env.set(key, value)
-      case "lambda" :: (params: List[String]) :: xs => Closure(env, params, xs)
-      case "if"::pred::first::second::Nil =>{
-        eval(pred,env) match {
-          case true => eval(first,env)
-          case false => eval(second,env)
-          case _ => throw new SyntaxException("not a boolean value")
-        }
+      //      case "define" :: (key: String) :: value :: Nil => eval(value, env, r => k(env.define(key, r)))
+      case "define" :: xs => xs match {
+        case (key: String) :: value :: Nil => eval(value, env, r => k(env.define(key, r)))
+        case ((key: String) :: (params: List[String])) :: body => k(env.define(key, Closure(env, params, body)))
+        case _ => throw new SyntaxException("illegal define statement...")
       }
-      case s: String => env.lookup(s)
-      case fun :: vals => eval(fun, env) match {
-        case Closure(envSaved, params, body) =>
-          val evaledValues = vals.map(v => eval(v, env))
-          val localMap = mutable.Map(params.zip(evaledValues).toMap.toSeq: _*)
-          val newEnv = envSaved.extend(localMap)
-          eval(body, newEnv)
-      }
-      case _ => expr
+      case "set!" :: (key: String) :: value :: Nil => k(env.set(key, value))
+      case "lambda" :: (params: List[String]) :: xs => k(Closure(env, params, xs))
+      case "if" :: pred :: first :: second :: Nil => eval(pred, env, {
+        case true => eval(first, env, k)
+        case false => eval(second, env, k)
+      })
+      case s: String => k(env.lookup(s))
+      case fun :: vals => eval(fun, env, r1 => {
+        cps_map(vals, eval0(env), evaluated =>
+          r1 match {
+            case Closure(saved, params, body) =>
+              cps_map(body, eval0(saved.extend(mutable.Map(params.zip(evaluated).toMap.toSeq: _*))),
+                r2 => k(r2.last))
+            case prim: Primitive => k(prim(evaluated))
+          })
+      })
+      case _ => k(expr)
     }
   }
 
   def main(args: Array[String]): Unit = {
-      val exp = parse("(define fact\n  (lambda (n)\n    (cond ((= n 1) 1)\n          (else 0))))")
-    print(exp.head)
-//    print(eval(exp.head,env0))
-
-    //    exp.map(e => eval(e, env0)).foreach(print)
+    val exp = parse("(define (fact n)\n  (if (= n 1)\n      1\n      (* n (fact (- n 1)))))\n(fact 10)")
+    exp.foreach(e => eval(e, env0, println))
 
   }
 

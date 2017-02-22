@@ -1,16 +1,9 @@
 
 package object ezksd {
 
-  val env0 = new Environment(null) {
-    override def lookup(key: String): Any = {
-      if (getMap.contains(key))
-        getMap(key)
-      else
-        throw new UnboundIdentifer(key)
-    }
-  }
-
   case class Str(str: String)
+
+  abstract class Primitive() extends Function[List[Any], Any]
 
   class ParseException(msg: String) extends Exception(msg)
 
