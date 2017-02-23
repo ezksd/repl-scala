@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7d9cbe2f-a2fb-4c97-bfc5-c795ce56621f" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="7d9cbe2f-a2fb-4c97-bfc5-c795ce56621f" name="Default" comment="" />
     <list id="85899630-0af9-44ee-b84d-899f1a239925" name="..." comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -891,7 +889,7 @@
       <workItem from="1487603948809" duration="37223000" />
       <workItem from="1487686477455" duration="47552000" />
       <workItem from="1487786252087" duration="13133000" />
-      <workItem from="1487840475589" duration="11415000" />
+      <workItem from="1487840475589" duration="11582000" />
     </task>
     <task id="LOCAL-00001" summary="add some primitive function">
       <created>1487769343126</created>
@@ -911,7 +909,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="109880000" />
+    <option name="totallyTimeSpent" value="110047000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
