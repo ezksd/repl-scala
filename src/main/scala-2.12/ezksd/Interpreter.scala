@@ -2,6 +2,7 @@ package ezksd
 
 import ezksd.Parser.parse
 
+import scala.annotation.tailrec
 import scala.collection.mutable
 
 
@@ -26,6 +27,7 @@ object Interpreter {
 
   def evalAndPrint(expr: Any): Unit = eval(expr, env0, println)
 
+  //  @tailrec
   def eval(expr: Any, env: Environment, k: Any => Unit): Unit = {
     expr match {
       //      case "define" :: (key: String) :: value :: Nil => eval(value, env, r => k(env.define(key, r)))
@@ -39,27 +41,36 @@ object Interpreter {
       case "call/cc" :: e1 :: Nil => eval(e1, env, {
         case Closure(saved, params, body) => eval(body, saved.extend(mutable.Map[String, Any]((params.head, k))), k)
       })
+      case "let" :: xs => xs match {
+        case (list: List[List[Any]]) :: body =>
+          val closure = Closure(env, list.map(_.head).map(_.asInstanceOf[String]), body)
+          cps_map(list.map(_.tail.head), evalHelper(env), evaluated => eval(closure :: evaluated, env, k))
+        case (s: String) :: (list: List[List[Any]]) :: body =>
+          val closure = Closure(env, list.map(_.head.asInstanceOf[String]), body)
+          env.define(s, closure)
+          cps_map(list.map(_.tail.head), evalHelper(env), evaluated => eval(closure :: evaluated, env, k))
+      }
       case "if" :: pred :: first :: second :: Nil => eval(pred, env, {
         case true => eval(first, env, k)
         case false => eval(second, env, k)
       })
       case s: String => k(env.lookup(s))
       case fun :: vals => eval(fun, env, r1 => {
-        cps_map(vals, evalHelper(env), evaluated =>
-          r1 match {
-            case Closure(saved, params, body) =>
-              cps_map(body, evalHelper(saved.extend(mutable.Map(params.zip(evaluated).toMap.toSeq: _*))),
-                r2 => k(r2.last))
-            case prim: Primitive => k(prim(evaluated))
-            case f:Function[Any,Unit] => f(evaluated.head)
-          })
+          cps_map(vals, evalHelper(env), evaluated =>
+            r1 match {
+              case Closure(saved, params, body) =>
+                cps_map(body, evalHelper(saved.extend(mutable.Map(params.zip(evaluated).toMap.toSeq: _*))),
+                  r2 => k(r2.last))
+              case prim: Primitive => k(prim(evaluated))
+              case f: Function[Any, Unit] => if (evaluated.isEmpty) k(f) else f(evaluated.head)
+            })
       })
       case _ => k(expr)
     }
   }
 
   def main(args: Array[String]): Unit = {
-    val exp = parse("(define a 1)")
+    val exp = parse("(let ((yin (call/cc (lambda (c) c)))) (display \"#\") (let ((yang (call/cc (lambda (c) c)))) (display \"*\") (yin yang)))")
     exp.foreach(e => eval(e, env0, println))
 
   }

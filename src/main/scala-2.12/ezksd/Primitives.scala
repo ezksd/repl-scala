@@ -16,7 +16,8 @@ object Primitives extends {
       "=" -> numOp((a, b) => a - b < 0.00000001D),
       "cons" -> biOp((a, b) => (a, b)),
       "car" -> unOp { case (a, b) => a },
-      "cdr" -> unOp { case (a, b) => b }
+      "cdr" -> unOp { case (a, b) => b },
+      "display" -> unOp {case Str(s) => print(s)}
     )
   }
 
@@ -34,5 +35,7 @@ object Primitives extends {
     case a :: Nil => op(a)
     case _ => throw new SyntaxException("illegal operand type")
   }
+
+
 
 }

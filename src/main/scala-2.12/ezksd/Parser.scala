@@ -9,11 +9,11 @@ object Parser extends RegexParsers {
   def number: Parser[Double] = """-?\d+(\.\d*)?""".r ^^ { _.toDouble }
 
   def symbol: Parser[String] =
-    """[^\s()#]+""".r ^^ {
+    """[\d\w_/]+""".r ^^ {
       _.toString
     }
 
-  def string: Parser[Str] = "\"" ~> """[^\s()#]""".r <~ "\"" ^^ Str
+  def string: Parser[Str] = "\"" ~> """[^\s\r",']*""".r <~ "\"" ^^ Str
 
   def bool: Parser[Boolean] = "#" ~> "t|f".r ^^ {
     "t".equals(_)

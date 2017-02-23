@@ -20,7 +20,7 @@ object Repl {
         try{
           parse(txt).foreach(evalAndPrint)
         }catch  {
-          case ex:Ex => System.err.println(ex.getMessage)
+          case ex:Ex => ex.printStackTrace()
         }
       }
     }
