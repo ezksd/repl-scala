@@ -3,6 +3,7 @@ package ezksd
 import scala.collection.mutable
 
 object Primitives extends {
+
   type Prim = List[Any] => Any
 
   def init: mutable.Map[String, Any] = {
