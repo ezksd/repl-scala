@@ -1,6 +1,8 @@
 
 package object ezksd {
 
+
+
   abstract class Primitive() extends Function[List[Any], Any]
 
   case class Str(str: String)
@@ -13,6 +15,6 @@ package object ezksd {
 
   class SyntaxException(msg: String) extends Ex(msg)
 
-  class UnboundIdentifer(msg:String) extends Ex(msg)
+  class UnboundIdentifier(msg:String) extends Ex(msg)
 
 }

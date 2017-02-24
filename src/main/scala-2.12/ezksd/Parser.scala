@@ -1,8 +1,5 @@
 package ezksd
 
-
-import java.io.{InputStream, InputStreamReader}
-
 import scala.util.parsing.combinator._
 
 object Parser extends RegexParsers {
@@ -35,10 +32,5 @@ object Parser extends RegexParsers {
     case Error(msg, _) => throw new ParseException(msg)
   }
 
-
-  def parse(in: InputStream, onSuccess: Any => Unit, onError: String => Unit): Unit = parseAll(program, new InputStreamReader(in)) match {
-    case Success(r, _) => onSuccess(r)
-    case Error(msg, _) => onError(msg)
-  }
 }
 
