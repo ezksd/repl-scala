@@ -1,19 +1,16 @@
 package ezksd
 
-
-import java.io.{InputStream, InputStreamReader}
-
 import scala.util.parsing.combinator._
 
 object Parser extends RegexParsers {
   def number: Parser[Double] = """-?\d+(\.\d*)?""".r ^^ { _.toDouble }
 
   def symbol: Parser[String] =
-    """[^\s()#]+""".r ^^ {
+    """[^\s\r,"'()]+""".r ^^ {
       _.toString
     }
 
-  def string: Parser[Str] = "\"" ~> """[^\s()#]""".r <~ "\"" ^^ Str
+  def string: Parser[Str] = "\"" ~> """[^\s\r",'()]*""".r <~ "\"" ^^ Str
 
   def bool: Parser[Boolean] = "#" ~> "t|f".r ^^ {
     "t".equals(_)
@@ -35,10 +32,5 @@ object Parser extends RegexParsers {
     case Error(msg, _) => throw new ParseException(msg)
   }
 
-
-  def parse(in: InputStream, onSuccess: Any => Unit, onError: String => Unit): Unit = parseAll(program, new InputStreamReader(in)) match {
-    case Success(r, _) => onSuccess(r)
-    case Error(msg, _) => onError(msg)
-  }
 }
 
