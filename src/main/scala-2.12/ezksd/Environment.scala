@@ -3,13 +3,14 @@ package ezksd
 import scala.collection.mutable
 
 class Environment(parent: Environment, map: mutable.Map[String, Any]) {
-  def this(m: mutable.Map[String, Any]) {
-    this(null, m)
-  }
+  def this(m: mutable.Map[String, Any]) = this(null, m)
 
   def lookup(key: String): Any = map.getOrElse(key, parent.lookup(key))
 
-  def define(key: String, value: Any): Unit = map.put(key, value)
+  def define(key: String, value: Any): String = {
+    map.put(key, value)
+    "define '" + key + "' "
+  }
 
   def extend(params: List[String], values: List[Any]): Environment = extend(mutable.Map(params.zip(values).toMap.toSeq: _*))
 
@@ -17,7 +18,13 @@ class Environment(parent: Environment, map: mutable.Map[String, Any]) {
 
   def extend(map: mutable.Map[String, Any]): Environment = new Environment(this, map)
 
-  def set(key: String, value: Any): Unit = if (map.contains(key)) map.put(key, value) else throw new UnboundIdentifier(key)
+  def set(key: String, value: Any): String =
+    if (map.contains(key)) {
+      map.put(key, value)
+      "set '" + key + "'" + value
+    } else {
+      throw new UnboundIdentifier(key)
+    }
 
   protected def getMap: mutable.Map[String, Any] = map
 

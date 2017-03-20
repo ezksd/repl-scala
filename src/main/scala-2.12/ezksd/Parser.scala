@@ -1,9 +1,12 @@
 package ezksd
 
+import ezksd.Interpreter.eval
+
+import scala.io.StdIn
 import scala.util.parsing.combinator._
 
 object Parser extends RegexParsers {
-  def number: Parser[Double] = """-?\d+(\.\d*)?""".r ^^ { _.toDouble }
+  def number: Parser[Int] = """-?\d+(\.\d*)?""".r ^^ { _.toInt }
 
   def symbol: Parser[String] =
     """[^\s\r,"'()]+""".r ^^ {
@@ -26,11 +29,30 @@ object Parser extends RegexParsers {
 
   def program: Parser[List[Any]] = opt("""[\s\r\t]*"""".r) ~> rep(expr)
 
-  def parse(txt: String): List[Any] = parseAll(program, txt) match {
-    case Success(r, _) => r
-    case Failure(msg, _) => throw new ParseException(msg)
-    case Error(msg, _) => throw new ParseException(msg)
+  def parse(txt: String) = parseAll(program, txt)
+
+  def parsetest(txt:String) = parseAll(program,txt) match {
+    case Success(x,_) => x
   }
 
+  def main(args: Array[String]): Unit = {
+    var txt = ""
+    def continue = txt += StdIn.readLine()
+    def reset  = txt  = StdIn.readLine("> ")
+
+    reset
+    while (!(txt.equals("") || txt.equals("\u0004"))) {
+      try{
+        parse(txt) match {
+          case Success(r, _) => r map eval foreach println;reset
+          case Failure(_, _) => continue
+          case Error(msg, _) => print(msg)
+        }
+      } catch {
+        case Ex(msg) => println(msg);reset
+      }
+    }
+    print("exit...")
+  }
 }
 
