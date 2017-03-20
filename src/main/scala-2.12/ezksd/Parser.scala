@@ -6,7 +6,7 @@ import scala.io.StdIn
 import scala.util.parsing.combinator._
 
 object Parser extends RegexParsers {
-  def number: Parser[Int] = """-?\d+(\.\d*)?""".r ^^ { _.toInt }
+  def number: Parser[Double] = """-?\d+(\.\d*)?""".r ^^ { _.toInt }
 
   def symbol: Parser[String] =
     """[^\s\r,"'()]+""".r ^^ {

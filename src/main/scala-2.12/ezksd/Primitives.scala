@@ -28,8 +28,8 @@ object Primitives extends {
     )
   }
 
-  def numOp(op: (Int, Int) => Any): Primitive = {
-    case List(a: Int, b: Int) => op(a, b)
+  def numOp(op: (Double, Double) => Any): Primitive = {
+    case List(a: Double, b: Double) => op(a, b)
     case _ => throw new SyntaxException("illegal operand type")
   }
 
