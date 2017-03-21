@@ -23,7 +23,7 @@ class Environment(parent: Environment, map: mutable.Map[String, Any]) {
       map.put(key, value)
       "set '" + key + "'" + value
     } else {
-      throw new UnboundIdentifier(key)
+      throw SyntaxException("unbounded identifier:" + key)
     }
 
   protected def getMap: mutable.Map[String, Any] = map
@@ -36,7 +36,7 @@ object Environment {
       if (getMap.contains(key))
         getMap(key)
       else
-        throw new UnboundIdentifier(key)
+        throw SyntaxException("unbounded identifier:" +key)
     }
   }
 }

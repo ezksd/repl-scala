@@ -1,6 +1,6 @@
 name := "scheme-cps-interpreter"
 
-version := "1.0"
+version := "0.13.13"
 
 scalaVersion := "2.12.1"
 

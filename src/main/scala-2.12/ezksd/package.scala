@@ -14,10 +14,6 @@ package object ezksd {
 
   case class Cont(k:Any=>TailRec[Any])
 
-  case class Ex(msg: String) extends Exception(msg)
-
-  class SyntaxException(msg: String) extends Ex(msg)
-
-  class UnboundIdentifier(msg:String) extends Ex(msg)
+  case class SyntaxException(msg: String) extends Exception(msg)
 
 }

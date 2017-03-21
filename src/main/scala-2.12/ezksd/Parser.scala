@@ -49,7 +49,7 @@ object Parser extends RegexParsers {
           case Error(msg, _) => print(msg)
         }
       } catch {
-        case Ex(msg) => println(msg);reset
+        case SyntaxException(msg) => println(msg);reset
       }
     }
     print("exit...")

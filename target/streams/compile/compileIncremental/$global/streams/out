@@ -1,0 +1,48 @@
+[0m[[0mdebug[0m] [0m[naha] [0m
+[0m[[0mdebug[0m] [0m[naha] Initial source changes: [0m
+[0m[[0mdebug[0m] [0m[naha] 	removed:Set()[0m
+[0m[[0mdebug[0m] [0m[naha] 	added: Set()[0m
+[0m[[0mdebug[0m] [0m[naha] 	modified: Set(/Users/larry/Workspace/scheme-cps-interpreter/src/main/scala-2.12/ezksd/Interpreter.scala)[0m
+[0m[[0mdebug[0m] [0m[naha] Invalidated products: Set()[0m
+[0m[[0mdebug[0m] [0m[naha] External API changes: API Changes: Set()[0m
+[0m[[0mdebug[0m] [0m[naha] Modified binary dependencies: Set()[0m
+[0m[[0mdebug[0m] [0m[naha] Initial directly invalidated sources: Set(/Users/larry/Workspace/scheme-cps-interpreter/src/main/scala-2.12/ezksd/Interpreter.scala)[0m
+[0m[[0mdebug[0m] [0m[naha] [0m
+[0m[[0mdebug[0m] [0m[naha] Sources indirectly invalidated by:[0m
+[0m[[0mdebug[0m] [0m[naha] 	product: Set()[0m
+[0m[[0mdebug[0m] [0m[naha] 	binary dep: Set()[0m
+[0m[[0mdebug[0m] [0m[naha] 	external source: Set()[0m
+[0m[[0mdebug[0m] [0mAll initially invalidated sources: Set(/Users/larry/Workspace/scheme-cps-interpreter/src/main/scala-2.12/ezksd/Interpreter.scala)[0m
+[0m[[0mdebug[0m] [0m[naha] Initial set of included nodes: Set(/Users/larry/Workspace/scheme-cps-interpreter/src/main/scala-2.12/ezksd/Interpreter.scala)[0m
+[0m[[0minfo[0m] [0mCompiling 1 Scala source to /Users/larry/Workspace/scheme-cps-interpreter/target/scala-2.12/classes...[0m
+[0m[[0mdebug[0m] [0mGetting org.scala-sbt:compiler-interface:0.13.13:component from component compiler for Scala 2.12.1[0m
+[0m[[0mdebug[0m] [0mGetting org.scala-sbt:compiler-interface:0.13.13:component from component compiler for Scala 2.12.1[0m
+[0m[[0mdebug[0m] [0mRunning cached compiler 24f14564, interfacing (CompilerInterface) with Scala compiler version 2.12.1[0m
+[0m[[0mdebug[0m] [0mCalling Scala compiler with arguments  (CompilerInterface):[0m
+[0m[[0mdebug[0m] [0m	-bootclasspath[0m
+[0m[[0mdebug[0m] [0m	/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home/jre/lib/resources.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home/jre/lib/rt.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home/jre/lib/sunrsasign.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home/jre/lib/jsse.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home/jre/lib/jce.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home/jre/lib/charsets.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home/jre/lib/jfr.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home/jre/classes:/Users/larry/.ivy2/cache/org.scala-lang/scala-library/jars/scala-library-2.12.1.jar[0m
+[0m[[0mdebug[0m] [0m	-classpath[0m
+[0m[[0mdebug[0m] [0m	/Users/larry/Workspace/scheme-cps-interpreter/target/scala-2.12/classes:/Users/larry/.ivy2/cache/org.scala-lang.modules/scala-parser-combinators_2.12/bundles/scala-parser-combinators_2.12-1.0.5.jar[0m
+[0m[[33mwarn[0m] [0m/Users/larry/Workspace/scheme-cps-interpreter/src/main/scala-2.12/ezksd/Interpreter.scala:20: non-variable type argument String in type pattern List[String] (the underlying of List[String]) is unchecked since it is eliminated by erasure[0m
+[0m[[33mwarn[0m] [0m        case (head: List[String]) :: body => k(env.define(head.head, Closure(env, head.tail, body)))[0m
+[0m[[33mwarn[0m] [0m                    ^[0m
+[0m[[33mwarn[0m] [0m/Users/larry/Workspace/scheme-cps-interpreter/src/main/scala-2.12/ezksd/Interpreter.scala:24: non-variable type argument String in type pattern List[String] (the underlying of List[String]) is unchecked since it is eliminated by erasure[0m
+[0m[[33mwarn[0m] [0m      case "lambda" :: (params: List[String]) :: xs => k(Closure(env, params, xs))[0m
+[0m[[33mwarn[0m] [0m                                ^[0m
+[0m[[33mwarn[0m] [0m/Users/larry/Workspace/scheme-cps-interpreter/src/main/scala-2.12/ezksd/Interpreter.scala:27: non-variable type argument List[Any] in type pattern List[List[Any]] (the underlying of List[List[Any]]) is unchecked since it is eliminated by erasure[0m
+[0m[[33mwarn[0m] [0m      case "let" :: (list: List[List[Any]]) :: body =>[0m
+[0m[[33mwarn[0m] [0m                           ^[0m
+[0m[[33mwarn[0m] [0m/Users/larry/Workspace/scheme-cps-interpreter/src/main/scala-2.12/ezksd/Interpreter.scala:29: non-variable type argument List[Any] in type pattern List[List[Any]] (the underlying of List[List[Any]]) is unchecked since it is eliminated by erasure[0m
+[0m[[33mwarn[0m] [0m      case "let" :: (name: String) :: (list: List[List[Any]]) :: body =>[0m
+[0m[[33mwarn[0m] [0m                                             ^[0m
+[0m[[33mwarn[0m] [0m/Users/larry/Workspace/scheme-cps-interpreter/src/main/scala-2.12/ezksd/Interpreter.scala:38: non-variable type argument List[Any] in type pattern List[Any] => Any (the underlying of ezksd.Primitive) is unchecked since it is eliminated by erasure[0m
+[0m[[33mwarn[0m] [0m        case (prim: Primitive) :: v => k(prim(v))[0m
+[0m[[33mwarn[0m] [0m                    ^[0m
+[0m[[33mwarn[0m] [0m5 warnings found[0m
+[0m[[0mdebug[0m] [0mScala compilation took 11.638896033 s[0m
+[0m[[0mdebug[0m] [0m[naha] New invalidations:[0m
+[0m[[0mdebug[0m] [0m[naha] 	Set()[0m
+[0m[[0mdebug[0m] [0m[naha] Initial set of included nodes: Set()[0m
+[0m[[0mdebug[0m] [0m[naha] Previously invalidated, but (transitively) depend on new invalidations:[0m
+[0m[[0mdebug[0m] [0m[naha] 	Set()[0m
+[0m[[0mdebug[0m] [0m[naha] All newly invalidated sources after taking into account (previously) recompiled sources:Set()[0m
