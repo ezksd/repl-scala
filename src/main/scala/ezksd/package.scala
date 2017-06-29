@@ -3,11 +3,15 @@ package object ezksd {
 
 
 
-  abstract class Primitive() extends Function[List[Any], Any]
+//  abstract class Primitive() extends Function[List[Any], Any]
 
   case class Str(str: String)
 
   case class Closure(env: Environment, params: List[String], body: List[Any])
+
+  case class Primitive(f:Function[List[Any], Any])
+
+  case class Cont(k:(Any) => Any)
 
   class Ex(msg: String) extends Exception(msg)
 

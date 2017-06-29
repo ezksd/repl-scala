@@ -22,26 +22,26 @@ object Primitives extends {
       }),
       "car" -> unOp { case (a, b) => a case a :: _ => a },
       "cdr" -> unOp { case (a, b) => b case _ :: xs => xs },
-      "list" -> of(identity),
+      "list" -> Primitive(identity),
       "display" -> unOp { case Str(s) => print(s) }
     )
   }
 
-  def numOp(op: (Double, Double) => Any): Primitive = {
-    case List(a: Double, b: Double) => op(a, b) //idea highlight error
+  def numOp(op: (Double, Double) => Any): Primitive = Primitive({
+    case List(a: Double, b: Double) => op(a, b)
     case _ => throw new SyntaxException("illegal operand type")
-  }
+  })
 
-  def biOp(op: (Any, Any) => Any): Primitive = {
+  def biOp(op: (Any, Any) => Any): Primitive = Primitive({
     case a :: b :: Nil => op(a, b)
     case _ => throw new SyntaxException("illegal operand type")
-  }
+  })
 
-  def unOp(op: Any => Any): Primitive = {
+  def unOp(op: Any => Any): Primitive = Primitive{
     case a :: Nil => op(a)
     case _ => throw new SyntaxException("illegal operand type")
   }
 
-  def of(op: List[Any] => Any): Primitive = op(_)
+//  def of(op: List[Any] => Any): Primitive = Primitive(op)
 
 }
